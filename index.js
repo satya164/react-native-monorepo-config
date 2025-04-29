@@ -23,8 +23,14 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
     );
   }
 
+  if (!Array.isArray(pkg.workspaces)) {
+    throw new Error(
+      `The 'workspaces' field in the 'package.json' at '${root}' must be an array.`
+    );
+  }
+
   // Get the list of monorepo packages except current package
-  const packages = (pkg.workspaces.packages || pkg.workspaces)
+  const packages = pkg.workspaces
     .flatMap((pattern) =>
       glob.sync(pattern, {
         cwd: root,
