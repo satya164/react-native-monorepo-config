@@ -9,7 +9,7 @@ Helper to configure Metro for a React Native app in a monorepo.
 ## Installation
 
 ```bash
-yarn add -D react-native-monorepo-config
+npm install --save-dev react-native-monorepo-config
 ```
 
 ## Usage
@@ -21,8 +21,8 @@ my-monorepo
 ├── apps
 │   └── my-app
 └── packages
-    ├── a/
-    └── b/
+    ├── a
+    └── b
 ```
 
 Here, `my-app` is a React Native app, and `a` and `b` are libraries that are used in the app.
