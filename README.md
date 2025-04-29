@@ -30,13 +30,13 @@ Here, `my-app` is a React Native app, and `a` and `b` are libraries that are use
 To configure Metro for `my-app`, you can create a `metro.config.js` file in the `my-app` directory with the following content:
 
 ```js
-const { getDefaultConfig } = require("@react-native/metro-config"); // Import from `@expo/metro-config` if using Expo CLI
-const { withMetroConfig } = require("react-native-monorepo-config");
+const { getDefaultConfig } = require('@react-native/metro-config'); // Import from `@expo/metro-config` if using Expo CLI
+const { withMetroConfig } = require('react-native-monorepo-config');
 
 module.exports = withMetroConfig(
   getDefaultConfig(__dirname), // Metro config to extend
   {
-    root: path.resolve(__dirname, "../.."), // Path to the monorepo root
+    root: path.resolve(__dirname, '../..'), // Path to the monorepo root
     dirname: __dirname, // Path to the current directory
   }
 );
@@ -50,7 +50,7 @@ If you want to customize the returned Metro config, remember to merge the return
 
 ```js
 const monoRepoConfig = withMetroConfig(getDefaultConfig(__dirname), {
-  root: path.resolve(__dirname, "../.."),
+  root: path.resolve(__dirname, '../..'),
   dirname: __dirname,
 });
 
@@ -60,8 +60,8 @@ module.exports = {
   resolver: {
     ...monoRepoConfig.resolver,
 
-    assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
-    sourceExts: [...resolver.sourceExts, "svg"],
+    assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
+    sourceExts: [...resolver.sourceExts, 'svg'],
   },
 };
 ```
