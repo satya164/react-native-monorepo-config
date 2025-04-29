@@ -1,0 +1,49 @@
+{
+  "name": "react-native-monorepo-config",
+  "version": "0.0.1",
+  "description": "Configure Metro for a React Native app in a monorepo",
+  "repository": "https://github.com/satya164/react-native-monorepo-config",
+  "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "escape-string-regexp": "^5.0.0",
+    "fast-glob": "^3.3.3"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.1",
+    "prettier": "^3.5.3",
+    "release-it": "^19.0.1"
+  },
+  "prettier": {
+    "quoteProps": "consistent",
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits"
+        },
+        "infile": "CHANGELOG.md"
+      }
+    }
+  }
+}
