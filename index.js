@@ -70,11 +70,17 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
       ')$'
   );
 
-  // When we import a package from the monorepo, metro won't be able to find their deps if they are hoisted
+  // When we import a package from the monorepo, metro may not be able to find the deps in blockList
   // We need to specify them in `extraNodeModules` to tell metro where to find them
   const extraNodeModules = peers.reduce((acc, name) => {
-    if (fs.existsSync(path.join(root, 'node_modules', name))) {
-      acc[name] = path.join(root, 'node_modules', name);
+    // First, try to find the package in the current package's node_modules
+    // As a fallback, try to find it in the monorepo root
+    const dir = [dirname, root]
+      .map((d) => path.join(d, 'node_modules', name))
+      .find((d) => fs.existsSync(d));
+
+    if (dir) {
+      acc[name] = dir;
     }
 
     return acc;
