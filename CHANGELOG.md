@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.5...v0.1.6) (2025-04-30)
+
+### Bug Fixes
+
+* fix setting mainFields and conditionNames ([59539f8](https://github.com/satya164/react-native-monorepo-config/commit/59539f8fc3f750d085dedb7fadaeb09b476841d2))
+
 ## [0.1.5](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.4...v0.1.5) (2025-04-30)
 
 ### Bug Fixes
