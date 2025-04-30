@@ -34,33 +34,42 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
 
   // Get the list of monorepo packages except current package
   // Yarn also supports workspaces as an object with a "packages" field
-  const packages = (pkg.workspaces.packages || pkg.workspaces)
-    .flatMap((pattern) =>
-      glob.sync(pattern, {
-        cwd: root,
-        onlyDirectories: true,
-        ignore: [`**/node_modules`, `**/.git`, `**/.yarn`],
-      })
-    )
-    .map((p) => path.join(root, p))
-    .filter((dir) => {
-      // Exclude current package
-      if (path.relative(dir, dirname) === '') {
-        return false;
-      }
+  const packages = Object.fromEntries(
+    (pkg.workspaces.packages || pkg.workspaces)
+      .flatMap((pattern) =>
+        glob.sync(pattern, {
+          cwd: root,
+          onlyDirectories: true,
+          ignore: [`**/node_modules`, `**/.git`, `**/.yarn`],
+        })
+      )
+      .map((p) => path.join(root, p))
+      .filter((dir) => {
+        // Exclude current package
+        if (path.relative(dir, dirname) === '') {
+          return false;
+        }
 
-      // Ignore folders that don't have a package.json
-      return fs.existsSync(path.join(dir, 'package.json'));
-    });
+        // Ignore folders that don't have a package.json
+        return fs.existsSync(path.join(dir, 'package.json'));
+      })
+      .map((dir) => {
+        const pak = JSON.parse(
+          fs.readFileSync(path.join(dir, 'package.json'), 'utf8')
+        );
+
+        return [pak.name, dir];
+      })
+  );
 
   // If monorepo root contains a name, add it to the list of packages
   // Necessary if the root is a package itself
   if (pkg.name) {
-    packages.push(root);
+    packages[pkg.name] = root;
   }
 
   // Get the list of peer dependencies for all packages in the monorepo
-  const peers = packages
+  const peers = Object.values(packages)
     .flatMap((dir) => {
       const pak = JSON.parse(
         fs.readFileSync(path.join(dir, 'package.json'), 'utf8')
@@ -77,7 +86,7 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
   // Otherwise duplicate versions of the same package will be loaded
   const blockList = new RegExp(
     '(' +
-      packages
+      Object.values(packages)
         .flatMap((dir) =>
           peers.map(
             (m) => `^${escape(path.join(dir, 'node_modules', m))}\\/.*$`
@@ -121,7 +130,7 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
       extraNodeModules,
       resolveRequest: (context, realModuleName, platform) => {
         // Prefer the source field for monorepo packages to consume source code
-        if (packages.includes(realModuleName)) {
+        if (packages[realModuleName]) {
           context.mainFields = ['source', ...context.mainFields];
           context.unstable_conditionNames = [
             'source',
@@ -129,7 +138,15 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
           ];
         }
 
-        return context.resolveRequest(context, realModuleName, platform);
+        if (baseConfig.resolver.resolveRequest) {
+          return baseConfig.resolver.resolveRequest(
+            context,
+            realModuleName,
+            platform
+          );
+        } else {
+          return context.resolveRequest(context, realModuleName, platform);
+        }
       },
     },
   };
