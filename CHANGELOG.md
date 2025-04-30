@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.6...v0.1.7) (2025-04-30)
+
+### Bug Fixes
+
+* add monorepo root as a package ([6a5c97d](https://github.com/satya164/react-native-monorepo-config/commit/6a5c97d2c0a3fcb385019102506d5bf39e930a8d))
+* handle resolver context being readonly in react-native ([0e7e94c](https://github.com/satya164/react-native-monorepo-config/commit/0e7e94cd10ed54216b91bdbe46dcad962eafcec4))
+
 ## [0.1.6](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.5...v0.1.6) (2025-04-30)
 
 ### Bug Fixes
