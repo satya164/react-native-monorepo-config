@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.4](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.3...v0.1.4) (2025-04-30)
+
+### Bug Fixes
+
+* fix missing root in paths in blockList ([a371d91](https://github.com/satya164/react-native-monorepo-config/commit/a371d918061b16f11621d246130ee7d7ccba94cb))
+
 ## [0.1.3](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.2...v0.1.3) (2025-04-29)
 
 ### Bug Fixes
