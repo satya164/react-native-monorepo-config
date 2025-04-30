@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.4...v0.1.5) (2025-04-30)
+
+### Bug Fixes
+
+* handle workspaces as an object ([a7401ee](https://github.com/satya164/react-native-monorepo-config/commit/a7401ee02963ef6be78984c573d67e8546444591))
+
 ## [0.1.4](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.3...v0.1.4) (2025-04-30)
 
 ### Bug Fixes
