@@ -128,24 +128,29 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
 
       blockList,
       extraNodeModules,
-      resolveRequest: (context, realModuleName, platform) => {
+      resolveRequest: (originalContext, moduleName, platform) => {
+        let context = originalContext;
+
         // Prefer the source field for monorepo packages to consume source code
-        if (packages[realModuleName]) {
-          context.mainFields = ['source', ...context.mainFields];
-          context.unstable_conditionNames = [
-            'source',
-            ...context.unstable_conditionNames,
-          ];
+        if (packages[moduleName]) {
+          context = {
+            ...context,
+            mainFields: ['source', ...context.mainFields],
+            unstable_conditionNames: [
+              'source',
+              ...context.unstable_conditionNames,
+            ],
+          };
         }
 
         if (baseConfig.resolver.resolveRequest) {
           return baseConfig.resolver.resolveRequest(
             context,
-            realModuleName,
+            moduleName,
             platform
           );
         } else {
-          return context.resolveRequest(context, realModuleName, platform);
+          return context.resolveRequest(context, moduleName, platform);
         }
       },
     },
