@@ -112,6 +112,13 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
     return acc;
   }, {});
 
+  // If monorepo root is a package, add it to extraNodeModules so metro can find it
+  // Normally monorepo packages are symlinked to node_modules, but the root is not
+  // So we need to add it manually
+  if (pkg.name) {
+    extraNodeModules[pkg.name] = root;
+  }
+
   /** @type {import('metro-config').MetroConfig} */
   return {
     ...baseConfig,
