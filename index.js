@@ -38,23 +38,28 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
         ignore: [`**/node_modules`, `**/.git`, `**/.yarn`],
       })
     )
-    .filter((p) => {
-      const dir = path.join(root, p);
-
-      // Ignore current package
+    .map((p) => path.join(root, p))
+    .filter((dir) => {
+      // Exclude current package
       if (path.relative(dir, dirname) === '') {
         return false;
       }
 
-      // Ignore packages that don't have a package.json
+      // Ignore folders that don't have a package.json
       return fs.existsSync(path.join(dir, 'package.json'));
     });
 
+  // If monorepo root contains a name, add it to the list of packages
+  // Necessary if the root is a package itself
+  if (pkg.name) {
+    packages.push(root);
+  }
+
   // Get the list of peer dependencies for all packages in the monorepo
   const peers = packages
-    .flatMap((it) => {
+    .flatMap((dir) => {
       const pak = JSON.parse(
-        fs.readFileSync(path.join(root, it, 'package.json'), 'utf8')
+        fs.readFileSync(path.join(dir, 'package.json'), 'utf8')
       );
 
       return pak.peerDependencies ? Object.keys(pak.peerDependencies) : [];
@@ -69,8 +74,10 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
   const blockList = new RegExp(
     '(' +
       packages
-        .flatMap((it) =>
-          peers.map((m) => `^${escape(path.join(it, 'node_modules', m))}\\/.*$`)
+        .flatMap((dir) =>
+          peers.map(
+            (m) => `^${escape(path.join(dir, 'node_modules', m))}\\/.*$`
+          )
         )
         .join('|') +
       ')$'

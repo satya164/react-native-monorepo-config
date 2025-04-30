@@ -30,6 +30,7 @@ Here, `my-app` is a React Native app, and `a` and `b` are libraries that are use
 To configure Metro for `my-app`, you can create a `metro.config.js` file in the `my-app` directory with the following content:
 
 ```js
+const path = require('path');
 const { getDefaultConfig } = require('@react-native/metro-config'); // Import from `@expo/metro-config` if using Expo CLI
 const { withMetroConfig } = require('react-native-monorepo-config');
 
@@ -70,7 +71,7 @@ module.exports = {
 
 This configuration will setup a few things:
 
-- Configure Metro to watch for changes in other packages in the monorepo instead of just the current package. This may slow down the bundling process, in large monorepos. In that case, you can override `watchFolders` to add specific folders to watch instead.
+- Configure Metro to watch for changes in other packages in the monorepo instead of only the current package. This may slow down the bundling process in large monorepos. In that case, you can override `watchFolders` to add specific folders to watch instead.
 - Block packages defined in `peerDependencies` of other packages in the monorepo to avoid duplicate versions from being loaded. Loading duplicate versions of some packages such as `react` can cause issues. Make sure to specify `peerDependencies` for your packages appropriately.
 - If the packages defined in `peerDependencies` have been hoisted to the monorepo root, point Metro to them so they can be found.
 - Configure Metro's resolve to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo. To utilize this, make sure to add `"source": "src/index.ts"` or `"exports": { ".": { "source": "./src/index.ts" } }` to the `package.json` of the packages you want to import from.
