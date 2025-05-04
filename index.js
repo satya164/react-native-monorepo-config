@@ -1,6 +1,7 @@
 import escape from 'escape-string-regexp';
 import glob from 'fast-glob';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 /**
@@ -99,11 +100,21 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
   // When we import a package from the monorepo, metro may not be able to find the deps in blockList
   // We need to specify them in `extraNodeModules` to tell metro where to find them
   const extraNodeModules = peers.reduce((acc, name) => {
-    // First, try to find the package in the current package's node_modules
-    // As a fallback, try to find it in the monorepo root
-    const dir = [dirname, root]
-      .map((d) => path.join(d, 'node_modules', name))
-      .find((d) => fs.existsSync(d));
+    let dir;
+
+    try {
+      // Try to resolve the package relative to the current package using node resolution
+      // This may fail if the module's `package.json` is not in its `exports`
+      const require = createRequire(path.join(dirname, 'package.json'));
+
+      dir = path.dirname(require.resolve(`${name}/package.json`));
+    } catch (e) {
+      // First, try to find the package in the current package's node_modules
+      // As a fallback, try to find it in the monorepo root
+      dir = [dirname, root]
+        .map((d) => path.join(d, 'node_modules', name))
+        .find((d) => fs.existsSync(d));
+    }
 
     if (dir) {
       acc[name] = dir;
