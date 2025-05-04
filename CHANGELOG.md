@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.8](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.7...v0.1.8) (2025-05-04)
+
+### Bug Fixes
+
+* try to resolve peer dep using node resolution ([051a4ed](https://github.com/satya164/react-native-monorepo-config/commit/051a4ed009618e4adb6561bd66251693f9a6ca8e))
+
 ## [0.1.7](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.6...v0.1.7) (2025-04-30)
 
 ### Bug Fixes
