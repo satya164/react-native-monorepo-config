@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.1.9](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.8...v0.1.9) (2025-05-11)
+
 ## [0.1.8](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.7...v0.1.8) (2025-05-04)
 
 ### Bug Fixes
