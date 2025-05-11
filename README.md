@@ -12,6 +12,8 @@ Helper to configure Metro for a React Native app in a monorepo.
 npm install --save-dev react-native-monorepo-config
 ```
 
+Also make sure that your're using recent version of Node.js, i.e. v20.19.0 and higher (LTS), v22.12.0 and higher (LTS) or v23.4.0 and higher.
+
 ## Usage
 
 Let's consider the following monorepo structure:
@@ -71,7 +73,43 @@ module.exports = {
 
 This configuration will setup a few things:
 
-- Configure Metro to watch for changes in other packages in the monorepo instead of only the current package. This may slow down the bundling process in large monorepos. In that case, you can override `watchFolders` to add specific folders to watch instead.
-- Block packages defined in `peerDependencies` of other packages in the monorepo to avoid duplicate versions from being loaded. Loading duplicate versions of some packages such as `react` can cause issues. Make sure to specify `peerDependencies` for your packages appropriately.
+- Configure Metro to watch for changes in the monorepo root instead of only the current package.
+
+  This may slow down the bundling process in large monorepos. In that case, you can override `watchFolders` to add specific folders to watch instead:
+
+  ```js
+  module.exports = {
+    watchFolders: [
+      path.resolve(__dirname),
+      // Path to packages that the app depends on
+      path.resolve(__dirname, '../packages/a'),
+      path.resolve(__dirname, '../packages/b'),
+    ],
+
+    ...monoRepoConfig,
+  };
+  ```
+
+- Block packages defined in `peerDependencies` of other packages in the monorepo to avoid duplicate versions from being loaded. They must be added under `dependencies` or `devDependencies` in the app's `package.json`.
+
+  Loading duplicate versions of some packages such as `react` can cause issues. So this way multiple versions are not loaded. Make sure to specify `peerDependencies` for your packages appropriately.
+
 - If the packages defined in `peerDependencies` have been hoisted to the monorepo root, point Metro to them so they can be found.
-- Configure Metro's resolve to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo. To utilize this, make sure to add `"source": "src/index.ts"` or `"exports": { ".": { "source": "./src/index.ts" } }` to the `package.json` of the packages you want to import from.
+- Configure Metro's resolve to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo.
+
+  To utilize this, make sure to add the `source` field to the `package.json` of the packages you want to import from, e.g.:
+
+  ```json
+  "source": "src/index.ts"
+  ```
+
+  Or in the `exports` field if you're using `exports` field and Metro 0.82.0+:
+
+  ```json
+  "exports": {
+     ".": {
+       "source": "./src/index.ts",
+       // other conditions...
+     },
+   }
+  ```
