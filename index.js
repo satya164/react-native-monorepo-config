@@ -69,6 +69,49 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
     packages[pkg.name] = root;
   }
 
+  const getPackageDir = (name) => {
+    try {
+      // Try to resolve the package relative to the current package using node resolution
+      // This may fail if the module's `package.json` is not in its `exports`
+      const require = createRequire(path.join(dirname, 'package.json'));
+
+      return path.dirname(require.resolve(`${name}/package.json`));
+    } catch (e) {
+      // First, try to find the package in the current package's node_modules
+      // As a fallback, try to find it in the monorepo root
+      return [dirname, root]
+        .map((d) => path.join(d, 'node_modules', name))
+        .find((d) => fs.existsSync(d));
+    }
+  };
+
+  const getPeerDeps = (name, seen = new Set()) => {
+    if (seen.has(name)) {
+      return [];
+    }
+
+    seen.add(name);
+
+    const dir = getPackageDir(name);
+
+    if (!dir) {
+      return [];
+    }
+
+    const pak = JSON.parse(
+      fs.readFileSync(path.join(dir, 'package.json'), 'utf8')
+    );
+
+    if (!pak.peerDependencies) {
+      return [];
+    }
+
+    return [
+      ...Object.keys(pak.peerDependencies),
+      ...Object.keys(pak.peerDependencies).flatMap((m) => getPeerDeps(m, seen)),
+    ];
+  };
+
   // Get the list of peer dependencies for all packages in the monorepo
   const peers = Object.values(packages)
     .flatMap((dir) => {
@@ -79,6 +122,7 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
       return pak.peerDependencies ? Object.keys(pak.peerDependencies) : [];
     })
     .sort()
+    .flatMap((m) => [m, ...getPeerDeps(m)])
     .filter(
       (m, i, self) => self.lastIndexOf(m) === i // Remove duplicates
     );
@@ -100,21 +144,7 @@ export function withMetroConfig(baseConfig, { root, dirname }) {
   // When we import a package from the monorepo, metro may not be able to find the deps in blockList
   // We need to specify them in `extraNodeModules` to tell metro where to find them
   const extraNodeModules = peers.reduce((acc, name) => {
-    let dir;
-
-    try {
-      // Try to resolve the package relative to the current package using node resolution
-      // This may fail if the module's `package.json` is not in its `exports`
-      const require = createRequire(path.join(dirname, 'package.json'));
-
-      dir = path.dirname(require.resolve(`${name}/package.json`));
-    } catch (e) {
-      // First, try to find the package in the current package's node_modules
-      // As a fallback, try to find it in the monorepo root
-      dir = [dirname, root]
-        .map((d) => path.join(d, 'node_modules', name))
-        .find((d) => fs.existsSync(d));
-    }
+    let dir = getPackageDir(name);
 
     if (dir) {
       acc[name] = dir;
