@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.10...v0.2.0) (2025-09-29)
+
+### Features
+
+* add a workspaces option ([57cdb8a](https://github.com/satya164/react-native-monorepo-config/commit/57cdb8aa348332051af03209d6c36ebdd1722dc9))
+
 ## [0.1.10](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.9...v0.1.10) (2025-09-12)
 
 ### Bug Fixes
