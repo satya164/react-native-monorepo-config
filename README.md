@@ -81,6 +81,8 @@ const monoRepoConfig = withMetroConfig(getDefaultConfig(__dirname), {
 });
 ```
 
+The workspaces can contain globs or relative paths. They will be resolved relative to the monorepo root.
+
 This can be useful if you're not using Yarn workspaces or if you want to include only specific packages to improve performance in large monorepos.
 
 ## How it works

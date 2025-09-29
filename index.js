@@ -21,7 +21,7 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
   if (workspaces == null) {
     if (pkg.workspaces == null) {
       throw new Error(
-        `No 'workspaces' field found in the 'package.json' at '${root}'.`
+        `No 'workspaces' field found in the 'package.json' at '${root}' and no 'workspaces' option was provided.`
       );
     }
 
