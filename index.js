@@ -13,30 +13,36 @@ import path from 'node:path';
  *
  * @returns {import('metro-config').MetroConfig}
  */
-export function withMetroConfig(baseConfig, { root, dirname }) {
+export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
   const pkg = JSON.parse(
     fs.readFileSync(path.join(root, 'package.json'), 'utf8')
   );
 
-  if (pkg.workspaces == null) {
-    throw new Error(
-      `No 'workspaces' field found in the 'package.json' at '${root}'.`
-    );
-  }
+  if (workspaces == null) {
+    if (pkg.workspaces == null) {
+      throw new Error(
+        `No 'workspaces' field found in the 'package.json' at '${root}'.`
+      );
+    }
 
-  if (
-    !Array.isArray(pkg.workspaces) &&
-    !Array.isArray(pkg.workspaces.packages)
-  ) {
-    throw new Error(
-      `The 'workspaces' field in the 'package.json' at '${root}' must be an array.`
-    );
+    if (
+      !Array.isArray(pkg.workspaces) &&
+      !Array.isArray(pkg.workspaces.packages)
+    ) {
+      throw new Error(
+        `The 'workspaces' field in the 'package.json' at '${root}' must be an array.`
+      );
+    }
+
+    workspaces = pkg.workspaces.packages || pkg.workspaces;
+  } else if (!Array.isArray(workspaces)) {
+    throw new Error(`The 'workspaces' option must be an array.`);
   }
 
   // Get the list of monorepo packages except current package
   // Yarn also supports workspaces as an object with a "packages" field
   const packages = Object.fromEntries(
-    (pkg.workspaces.packages || pkg.workspaces)
+    workspaces
       .flatMap((pattern) =>
         glob.sync(pattern, {
           cwd: root,

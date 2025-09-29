@@ -69,6 +69,20 @@ module.exports = {
 };
 ```
 
+## Custom workspaces
+
+By default, the workspaces are read from the `workspaces` field in the monorepo root's `package.json`. If you want to specify a custom list of workspaces, you can pass a `workspaces` array to the options:
+
+```js
+const monoRepoConfig = withMetroConfig(getDefaultConfig(__dirname), {
+  root: path.resolve(__dirname, '../..'),
+  dirname: __dirname,
+  workspaces: ['packages/a', 'packages/b'],
+});
+```
+
+This can be useful if you're not using Yarn workspaces or if you want to include only specific packages to improve performance in large monorepos.
+
 ## How it works
 
 This configuration will setup a few things:
