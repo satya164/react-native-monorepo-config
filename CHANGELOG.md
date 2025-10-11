@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.2.2](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.1...v0.2.2) (2025-10-11)
+
 ## [0.2.1](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.0...v0.2.1) (2025-09-29)
 
 ## [0.2.0](https://github.com/satya164/react-native-monorepo-config/compare/v0.1.10...v0.2.0) (2025-09-29)
