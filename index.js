@@ -185,8 +185,8 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
       resolveRequest: (originalContext, moduleName, platform) => {
         let context = originalContext;
 
-        // Prefer the source field for monorepo packages to consume source code
-        if (packages[moduleName]) {
+        // Prefer the source field for monorepo packages and their subpaths to consume source code
+        if (Object.keys(packages).some((name) => moduleName.startsWith(name))) {
           context = {
             ...context,
             mainFields: ['source', ...context.mainFields],
