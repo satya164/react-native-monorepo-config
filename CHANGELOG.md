@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.2...v0.3.0) (2025-10-28)
+
+### Features
+
+* also handle subpaths for monorepo packages ([3c00320](https://github.com/satya164/react-native-monorepo-config/commit/3c0032097d30674cfaebc5a88c6547612ce0d684))
+
 ## [0.2.2](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.1...v0.2.2) (2025-10-11)
 
 ## [0.2.1](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.0...v0.2.1) (2025-09-29)
