@@ -1,6 +1,6 @@
 {
   "name": "react-native-monorepo-config",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Configure Metro for a React Native app in a monorepo",
   "repository": "https://github.com/satya164/react-native-monorepo-config",
   "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",

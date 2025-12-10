@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.0...v0.3.1) (2025-12-10)
+
+### Bug Fixes
+
+* fix blocklist on windows ([b4ca6a9](https://github.com/satya164/react-native-monorepo-config/commit/b4ca6a992ff4dc5cce144c4aacd03677f32ab804))
+
 ## [0.3.0](https://github.com/satya164/react-native-monorepo-config/compare/v0.2.2...v0.3.0) (2025-10-28)
 
 ### Features
