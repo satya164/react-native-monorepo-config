@@ -135,16 +135,10 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
 
   // We need to exclude the peerDependencies we've collected in packages' node_modules
   // Otherwise duplicate versions of the same package will be loaded
-  const blockList = new RegExp(
-    '(' +
-      Object.values(packages)
-        .flatMap((dir) =>
-          peers.map(
-            (m) => `^${escape(path.join(dir, 'node_modules', m))}\\/.*$`
-          )
-        )
-        .join('|') +
-      ')$'
+  const blockList = Object.values(packages).flatMap((dir) =>
+    peers.map(
+      (m) => new RegExp(`^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`)
+    )
   );
 
   // When we import a package from the monorepo, metro may not be able to find the deps in blockList
