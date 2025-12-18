@@ -63,8 +63,8 @@ module.exports = {
   resolver: {
     ...monoRepoConfig.resolver,
 
-    assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
-    sourceExts: [...resolver.sourceExts, 'svg'],
+    assetExts: monoRepoConfig.resolver.assetExts.filter((ext) => ext !== 'svg'),
+    sourceExts: [...monoRepoConfig.resolver.sourceExts, 'svg'],
   },
 };
 ```
@@ -106,12 +106,12 @@ This configuration will setup a few things:
   };
   ```
 
-- Block packages defined in `peerDependencies` of other packages in the monorepo to avoid duplicate versions from being loaded. They must be added under `dependencies` or `devDependencies` in the app's `package.json`.
+- Block packages defined in `peerDependencies` of other packages in the monorepo to avoid duplicate versions from being loaded. They must be added under `dependencies` or `devDependencies` in the app's `package.json` to be resolved correctly.
 
   Loading duplicate versions of some packages such as `react` can cause issues. So this way multiple versions are not loaded. Make sure to specify `peerDependencies` for your packages appropriately.
 
 - If the packages defined in `peerDependencies` have been hoisted to the monorepo root, point Metro to them so they can be found.
-- Configure Metro's resolve to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo.
+- Configure Metro's resolver to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo.
 
   To utilize this, make sure to add the `source` field to the `package.json` of the packages you want to import from, e.g.:
 

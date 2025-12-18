@@ -10,6 +10,7 @@ import path from 'node:path';
  * @param {import('metro-config').MetroConfig} baseConfig Base Metro config to extend.
  * @param {string} options.root Root directory path of the monorepo.
  * @param {string} options.dirname Directory path of the current package.
+ * @param {Object} [options.workspaces] Optional list of workspace patterns. By default, `workspaces` field in the `package.json` at root is used.
  *
  * @returns {import('metro-config').MetroConfig}
  */
