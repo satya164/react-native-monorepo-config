@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.3](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.2...v0.3.3) (2026-02-10)
+
+### Bug Fixes
+
+* exclude extraNodeModule paths from blockList ([#2](https://github.com/satya164/react-native-monorepo-config/issues/2)) ([8f2c018](https://github.com/satya164/react-native-monorepo-config/commit/8f2c0182d5025e48d62f9176e204f2a0aa8ca010))
+
 ## [0.3.2](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.1...v0.3.2) (2025-12-18)
 
 ## [0.3.1](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.0...v0.3.1) (2025-12-10)
