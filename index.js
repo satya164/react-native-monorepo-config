@@ -134,14 +134,6 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
       (m, i, self) => self.lastIndexOf(m) === i // Remove duplicates
     );
 
-  // We need to exclude the peerDependencies we've collected in packages' node_modules
-  // Otherwise duplicate versions of the same package will be loaded
-  const blockList = Object.values(packages).flatMap((dir) =>
-    peers.map(
-      (m) => new RegExp(`^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`)
-    )
-  );
-
   // When we import a package from the monorepo, metro may not be able to find the deps in blockList
   // We need to specify them in `extraNodeModules` to tell metro where to find them
   const extraNodeModules = peers.reduce((acc, name) => {
@@ -153,6 +145,20 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
 
     return acc;
   }, {});
+
+  // We need to exclude the peerDependencies we've collected in packages' node_modules
+  // Otherwise duplicate versions of the same package will be loaded
+  const blockList = Object.values(packages).flatMap((dir) =>
+    peers.map((m) => {
+        // Skip blocking items that we've specified in extraNodeModules
+        const peerPath = path.join(dir, 'node_modules', m)
+        if(extraNodeModules[m] === peerPath) {
+          return null;
+        }
+        return new RegExp(`^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`)
+      }
+    )
+  ).filter((value) => value != null);
 
   // If monorepo root is a package, add it to extraNodeModules so metro can find it
   // Normally monorepo packages are symlinked to node_modules, but the root is not
