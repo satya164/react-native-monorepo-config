@@ -148,17 +148,22 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
 
   // We need to exclude the peerDependencies we've collected in packages' node_modules
   // Otherwise duplicate versions of the same package will be loaded
-  const blockList = Object.values(packages).flatMap((dir) =>
-    peers.map((m) => {
+  const blockList = Object.values(packages)
+    .flatMap((dir) =>
+      peers.map((m) => {
         // Skip blocking items that we've specified in extraNodeModules
-        const peerPath = path.join(dir, 'node_modules', m)
-        if(extraNodeModules[m] === peerPath) {
+        const peerPath = path.join(dir, 'node_modules', m);
+
+        if (extraNodeModules[m] === peerPath) {
           return null;
         }
-        return new RegExp(`^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`)
-      }
+
+        return new RegExp(
+          `^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`
+        );
+      })
     )
-  ).filter((value) => value != null);
+    .filter((value) => value != null);
 
   // If monorepo root is a package, add it to extraNodeModules so metro can find it
   // Normally monorepo packages are symlinked to node_modules, but the root is not
