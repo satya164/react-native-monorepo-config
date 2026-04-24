@@ -159,7 +159,7 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
         }
 
         return new RegExp(
-          `^${escape(path.join(dir, 'node_modules', m))}[\/\\\\]`
+          `^${escape(path.join(dir, 'node_modules', m))}(?:[/\\\\])`
         );
       })
     )
