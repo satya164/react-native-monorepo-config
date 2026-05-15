@@ -181,13 +181,18 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
     // We need to watch the root of the monorepo
     // This lets Metro find the monorepo packages automatically using haste
     // This also lets us import modules from monorepo root
-    watchFolders: [root],
+    watchFolders: [...(baseConfig.watchFolders || []), root],
 
     resolver: {
       ...baseConfig.resolver,
 
-      blockList,
-      extraNodeModules,
+      blockList: [...(baseConfig.resolver.blockList || []), ...blockList],
+
+      extraNodeModules: {
+        ...baseConfig.resolver.extraNodeModules,
+        ...extraNodeModules,
+      },
+
       resolveRequest: (originalContext, moduleName, platform) => {
         let context = originalContext;
 
