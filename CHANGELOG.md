@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.4](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.3...v0.3.4) (2026-05-15)
+
+### Bug Fixes
+
+* merge all properties from base config ([9e428e2](https://github.com/satya164/react-native-monorepo-config/commit/9e428e2969dde70bb86151b57fdccc5faa881459))
+
 ## [0.3.3](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.2...v0.3.3) (2026-02-10)
 
 ### Bug Fixes
