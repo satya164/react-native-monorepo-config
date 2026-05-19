@@ -186,7 +186,10 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
     resolver: {
       ...baseConfig.resolver,
 
-      blockList: [...(baseConfig.resolver.blockList || []), ...blockList],
+      blockList: [
+        ...[baseConfig.resolver.blockList].flat().filter(Boolean),
+        ...blockList,
+      ],
 
       extraNodeModules: {
         ...baseConfig.resolver.extraNodeModules,
