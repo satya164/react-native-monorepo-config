@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.5](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.4...v0.3.5) (2026-05-19)
+
+### Bug Fixes
+
+* fix non-array blockList ([0fc4974](https://github.com/satya164/react-native-monorepo-config/commit/0fc4974c48bcd7fb21ef28a7127a4c19b3a05c0b))
+
 ## [0.3.4](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.3...v0.3.4) (2026-05-15)
 
 ### Bug Fixes
