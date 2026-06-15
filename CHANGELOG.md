@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.5...v0.4.0) (2026-06-15)
+
+### Features
+
+* add support for overriding conditions ([6446b5e](https://github.com/satya164/react-native-monorepo-config/commit/6446b5efef3873a3bf2f1b56b213490e6523af63))
+
 ## [0.3.5](https://github.com/satya164/react-native-monorepo-config/compare/v0.3.4...v0.3.5) (2026-05-19)
 
 ### Bug Fixes
