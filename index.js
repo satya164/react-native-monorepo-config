@@ -11,10 +11,14 @@ import path from 'node:path';
  * @param {string} options.root Root directory path of the monorepo.
  * @param {string} options.dirname Directory path of the current package.
  * @param {Object} [options.workspaces] Optional list of workspace patterns. By default, `workspaces` field in the `package.json` at root is used.
+ * @param {string[]} [options.conditions] Optional list of conditions to add to the resolver. Uses [`source`] by default.
  *
  * @returns {import('metro-config').MetroConfig}
  */
-export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
+export function withMetroConfig(
+  baseConfig,
+  { root, dirname, workspaces, conditions = ['source'] }
+) {
   const pkg = JSON.parse(
     fs.readFileSync(path.join(root, 'package.json'), 'utf8')
   );
@@ -38,6 +42,13 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
     workspaces = pkg.workspaces.packages || pkg.workspaces;
   } else if (!Array.isArray(workspaces)) {
     throw new Error(`The 'workspaces' option must be an array.`);
+  }
+
+  if (
+    !Array.isArray(conditions) ||
+    conditions.some((c) => typeof c !== 'string')
+  ) {
+    throw new Error(`The 'conditions' option must be an array of strings.`);
   }
 
   // Get the list of monorepo packages except current package
@@ -203,9 +214,9 @@ export function withMetroConfig(baseConfig, { root, dirname, workspaces }) {
         if (Object.keys(packages).some((name) => moduleName.startsWith(name))) {
           context = {
             ...context,
-            mainFields: ['source', ...context.mainFields],
+            mainFields: [...conditions, ...context.mainFields],
             unstable_conditionNames: [
-              'source',
+              ...conditions,
               ...context.unstable_conditionNames,
             ],
           };

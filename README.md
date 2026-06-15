@@ -41,6 +41,7 @@ module.exports = withMetroConfig(
   {
     root: path.resolve(__dirname, '../..'), // Path to the monorepo root
     dirname: __dirname, // Path to the current directory
+    conditions: ['my-library-source'], // Optional list of export conditions for the resolver.
   }
 );
 ```
@@ -78,6 +79,7 @@ const monoRepoConfig = withMetroConfig(getDefaultConfig(__dirname), {
   root: path.resolve(__dirname, '../..'),
   dirname: __dirname,
   workspaces: ['packages/a', 'packages/b'],
+  conditions: ['my-library-source'],
 });
 ```
 
@@ -111,12 +113,12 @@ This configuration will setup a few things:
   Loading duplicate versions of some packages such as `react` can cause issues. So this way multiple versions are not loaded. Make sure to specify `peerDependencies` for your packages appropriately.
 
 - If the packages defined in `peerDependencies` have been hoisted to the monorepo root, point Metro to them so they can be found.
-- Configure Metro's resolver to prioritize `package.json#source` or the `source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo.
+- Configure Metro's resolver to prioritize `package.json#my-library-source` (or `source` if you didn't pass `conditions`) or the `my-library-source` condition in `package.json#exports` so that the app can import source code directly from other packages in the monorepo.
 
-  To utilize this, make sure to add the `source` field to the `package.json` of the packages you want to import from, e.g.:
+  To utilize this, make sure to add the custom condition (e.g. `my-library-source` or `source`) field to the `package.json` of the packages you want to import from, e.g.:
 
   ```json
-  "source": "src/index.ts"
+  "my-library-source": "src/index.ts"
   ```
 
   Or in the `exports` field if you're using `exports` field and Metro 0.82.0+:
@@ -124,7 +126,7 @@ This configuration will setup a few things:
   ```json
   "exports": {
      ".": {
-       "source": "./src/index.ts",
+       "my-library-source": "./src/index.ts",
        // other conditions...
      },
    }
